@@ -1,10 +1,12 @@
-# NvChad terminal Plugin
+# NvChad Official Terminal Plugin
 
-## Install
+## Setup
 
-- Simply install the plugin with packer as you would for any other:
+### Installation
 
-```lua
+Simply install the plugin with packer as you would for any other:
+
+```
 use {
   "NvChad/nvterm",
   config = function ()
@@ -14,9 +16,8 @@ use {
 ```
 
 ### Configuration
-
-- Pass a table of configuration options to the plugin's `.setup()` function above.
-- Default configuration table
+Pass a table of configuration options to the plugin's `.setup()` function above.
+A sample configuration table with the default options is shown below:
 
 ```lua
 require("nvterm").setup({
@@ -39,9 +40,26 @@ require("nvterm").setup({
     close_on_exit = true,
     auto_insert = true,
   },
+  mappings = {
+    toggle = {
+      float = "<A-i>",
+      horizontal = "<A-h>",
+      vertical = "<A-v>",
+    },
+    new = {
+      horizontal = "<C-h>",
+      vertical = "<C-v>",
+    },
+  },
+  enable_new_mappings = false,
 })
 ```
 
+```
+By default, the mappings for creating a new terminal rather than toggling the current one are disabled.
+If `enable_new_mappings` is set to true, `new` will be set to any mappings passed in the configuration table under `new` or the defaults.
+```
+A shortcut is available for setting options of the different terminal types and mappings:
 ```lua
 require("nvterm").setup({
   float = {
@@ -54,6 +72,11 @@ require("nvterm").setup({
   },
   horizontal = { location = "rightbelow", split_ratio = .3, },
   vertical = { location = "rightbelow", split_ratio = .5 },
+  mappings{
+    toggle {
+      horizontal = "<A-s>"
+    }
+  }
 })
 ```
 
@@ -81,29 +104,9 @@ require("nvterm").setup({
 })
 ```
 
-### Functions
-
-Use the below functions to map them for keybindings
-
-#### Toggle
-
-```lua
-require("nvterm.terminal").toggle "float"
-require("nvterm.terminal").toggle "horizontal"
-require("nvterm.terminal").toggle "vertical"
-```
-
-#### Spawn new terminals
-
-```lua
-require("nvterm.terminal").new "horizontal"
-require("nvterm.terminal").new "vertical"
-```
-
 ### Additional Functionality
 
 NvTerm provides an api for you to send commands to the terminal. You can create different ones for different filetypes like so:
-
 ```lua
 require("nvterm").setup()
 
@@ -130,3 +133,4 @@ end
 `terminal.send` also takes a 'type' parameter, so you can choose what type of terminal to send the command to.
 By default, it runs the command in the last opened terminal, or a vertical one if none exist.
 `terminal.send(ft_cmds[vim.bo.filetype], "float")` will run the command in a floating terminal
+
